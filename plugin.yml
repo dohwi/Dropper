@@ -1,0 +1,6 @@
+name: Dropper
+main: Dropper\Dropper
+src-namespace-prefix: Dropper
+author: dohwi
+api: 5.0.0
+version: 1.0.0
