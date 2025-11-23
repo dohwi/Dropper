@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Dropper\Tile;
 
-use Dropper\Inventory\DropperInventory;
+use Dropper\Dropper;
+use muqsit\invmenu\InvMenu;
 use pocketmine\block\tile\Container;
 use pocketmine\block\tile\ContainerTrait;
 use pocketmine\block\tile\Nameable;
@@ -20,12 +21,12 @@ class DropperTile extends Spawnable implements Container, Nameable
     use ContainerTrait;
     use NameableTrait;
 
-    private DropperInventory $inventory;
+    private InvMenu $menu;
 
     public function __construct(World $world, Vector3 $pos)
     {
         parent::__construct($world, $pos);
-        $this->inventory = new DropperInventory($this->position);
+        $this->menu = InvMenu::create(Dropper::INVMENU_TYPE_DROPPER);
     }
 
     public function readSaveData(CompoundTag $nbt): void
@@ -40,14 +41,6 @@ class DropperTile extends Spawnable implements Container, Nameable
         $this->saveName($nbt);
     }
 
-    public function close(): void
-    {
-        if (!$this->closed) {
-            $this->inventory->removeAllViewers();
-            parent::close();
-        }
-    }
-
     public function getDefaultName(): string
     {
         return "Dropper";
@@ -55,11 +48,16 @@ class DropperTile extends Spawnable implements Container, Nameable
 
     public function getRealInventory(): Inventory
     {
-        return $this->inventory;
+        return $this->menu->getInventory();
     }
 
     public function getInventory(): Inventory
     {
-        return $this->inventory;
+        return $this->menu->getInventory();
+    }
+
+    public function getMenu(): InvMenu
+    {
+        return $this->menu;
     }
 }

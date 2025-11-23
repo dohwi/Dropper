@@ -13,9 +13,6 @@ use pocketmine\block\utils\PoweredByRedstoneTrait;
 use pocketmine\item\Item;
 use pocketmine\math\Facing;
 use pocketmine\math\Vector3;
-use pocketmine\network\mcpe\protocol\ContainerOpenPacket;
-use pocketmine\network\mcpe\protocol\types\BlockPosition;
-use pocketmine\network\mcpe\protocol\types\inventory\WindowTypes;
 use pocketmine\player\Player;
 use pocketmine\world\BlockTransaction;
 
@@ -66,15 +63,12 @@ class DropperBlock extends Opaque implements PoweredByRedstone
     public function onInteract(Item $item, int $face, Vector3 $clickVector, ?Player $player = null, array &$returnedItems = []): bool
     {
         if ($player !== null) {
+            /**
+             * @var DropperTile $tile
+             */
             $tile = $this->position->getWorld()->getTile($this->position);
             if ($tile instanceof DropperTile) {
-                $session = $player->getNetworkSession();
-                $session->sendDataPacket(ContainerOpenPacket::blockInv(
-                    $session->getInvManager()->getWindowId($tile->getInventory()) ?? $session->getInvManager()->getCurrentWindowId() + 1,
-                    WindowTypes::DROPPER,
-                    BlockPosition::fromVector3($this->position)
-                ));
-                $player->setCurrentWindow($tile->getInventory());
+                $tile->getMenu()->send($player);
             }
             return true;
         }

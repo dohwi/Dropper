@@ -8,6 +8,8 @@ use Dropper\Block\DropperBlock;
 use Dropper\Listener\EventListener;
 use Dropper\Tile\DropperTile;
 use Dropper\Extra\ExtraDropperBlock;
+use muqsit\invmenu\InvMenuHandler;
+use muqsit\invmenu\type\util\InvMenuTypeBuilders;
 use pocketmine\block\RuntimeBlockStateRegistry;
 use pocketmine\block\tile\TileFactory;
 use pocketmine\data\bedrock\block\BlockStateNames;
@@ -16,12 +18,15 @@ use pocketmine\data\bedrock\block\convert\BlockStateReader;
 use pocketmine\data\bedrock\block\convert\BlockStateWriter;
 use pocketmine\inventory\CreativeInventory;
 use pocketmine\item\StringToItemParser;
+use pocketmine\network\mcpe\protocol\types\inventory\WindowTypes;
 use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\world\format\io\GlobalBlockStateHandlers;
 
 final class Dropper extends PluginBase
 {
+    public const INVMENU_TYPE_DROPPER = "invmenu:dropper";
+
     protected function onEnable(): void
     {
         $this->getServer()->getPluginManager()->registerEvents(new EventListener(), $this);
@@ -40,6 +45,17 @@ final class Dropper extends PluginBase
         });
 
         CreativeInventory::getInstance()->add(ExtraDropperBlock::DROPPER()->asItem());
+
+        if(!InvMenuHandler::isRegistered()) {
+            InvMenuHandler::register($this);
+            InvMenuHandler::getTypeRegistry()->register(self::INVMENU_TYPE_DROPPER, InvMenuTypeBuilders::BLOCK_ACTOR_FIXED()
+                ->setBlock(ExtraDropperBlock::DROPPER())
+                ->setSize(9)
+                ->setBlockActorId("Dropper")
+                ->setNetworkWindowType(WindowTypes::DROPPER)
+                ->build()
+            );
+        }
     }
 
     public static function registerBlock(): void
