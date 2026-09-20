@@ -3,9 +3,9 @@
   <p>PocketMine-MP 5.0.0 바닐라 투하기(Dropper) 블록 및 인벤토리 구현체</p>
 
   <p>
-    <img src="https://img.shields.io/badge/PocketMine--MP-API%205.0.0-FF8C00?style=flat-square" />
-    <img src="https://img.shields.io/badge/PHP-8.1+-777BB4?style=flat-square&logo=php&logoColor=white" />
-    <img src="https://img.shields.io/badge/Minecraft-Bedrock-5C8A36?style=flat-square" />
+    <a href="https://pmmp.io"><img src="https://img.shields.io/badge/PocketMine--MP-API%205.0.0-FF8C00?style=flat-square" /></a>
+    <a href="https://www.php.net"><img src="https://img.shields.io/badge/PHP-8.1+-777BB4?style=flat-square&logo=php&logoColor=white" /></a>
+    <a href="https://www.minecraft.net"><img src="https://img.shields.io/badge/Minecraft-Bedrock-5C8A36?style=flat-square" /></a>
   </p>
 </div>
 
